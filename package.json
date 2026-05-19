@@ -9,7 +9,7 @@
     "cy:run:ui": "cypress run --spec 'cypress/e2e/ui/**'",
     "lint": "eslint cypress --ext .ts",
     "format": "prettier --write .",
-    "report": "mochawesome-merge cypress/reports/*.json | marge --reportDir cypress/reports/html"
+    "report": "mkdir -p cypress/reports && mochawesome-merge 'cypress/reports/*.json' | marge --reportDir cypress/reports/html"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^7.0.0",

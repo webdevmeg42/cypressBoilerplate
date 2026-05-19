@@ -1,3 +1,5 @@
+// API-layer auth helper following the Page Object naming convention.
+// In a real app, replace cy.request() calls with cy.visit() + cy.get() interactions.
 const ENDPOINTS = {
   login: '/auth/login',
   me: '/auth/me',

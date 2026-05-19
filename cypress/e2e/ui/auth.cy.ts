@@ -6,6 +6,8 @@ describe('Auth flows — DummyJSON', () => {
       cy.fixture('ui/user').then((user: { username: string; password: string }) => {
         cy.login(user.username, user.password);
       });
+      // cy.wrap(null) defers this assertion until cy.login() has completed
+      // and Cypress.env('token') has been written by the command.
       cy.wrap(null).then(() => {
         const token = Cypress.env('token') as string;
         expect(token).to.be.a('string').and.have.length.greaterThan(0);
@@ -27,6 +29,7 @@ describe('Auth flows — DummyJSON', () => {
       cy.fixture('ui/user').then((user: { username: string; password: string }) => {
         cy.login(user.username, user.password);
       });
+      // Defer until cy.login() has populated Cypress.env('token').
       cy.wrap(null).then(() => {
         const token = Cypress.env('token') as string;
         LoginPage.me(token).then((response) => {
