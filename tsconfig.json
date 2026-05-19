@@ -10,5 +10,5 @@
     "types": ["cypress"],
     "baseUrl": "."
   },
-  "include": ["cypress/**/*.ts"]
+  "include": ["cypress/**/*.ts", "cypress.config.ts"]
 }
