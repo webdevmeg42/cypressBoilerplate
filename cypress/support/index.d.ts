@@ -16,6 +16,6 @@ declare namespace Cypress {
       title: string;
       body: string;
       userId: number;
-    }): Chainable<Response<{ id: number; title: string; body: string; userId: number }>>;
+    }): Chainable<Response<{ id?: number; title: string; body: string; userId: number }>>;
   }
 }
