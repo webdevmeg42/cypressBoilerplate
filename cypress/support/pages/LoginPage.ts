@@ -1,29 +1,36 @@
 const ENDPOINTS = {
-  login: '/api/login',
-  register: '/api/register',
+  login: '/auth/login',
+  me: '/auth/me',
 } as const;
 
 interface AuthPayload {
-  email: string;
+  username: string;
   password: string;
 }
 
-interface AuthSuccessResponse {
-  token: string;
+interface LoginSuccessResponse {
+  accessToken: string;
+  refreshToken: string;
+  id: number;
+  username: string;
+  email: string;
 }
 
 interface AuthErrorResponse {
-  error: string;
+  message: string;
 }
 
-interface RegisterSuccessResponse {
+interface MeResponse {
   id: number;
-  token: string;
+  username: string;
+  email: string;
+  firstName: string;
+  lastName: string;
 }
 
 export const LoginPage = {
-  login(payload: AuthPayload): Cypress.Chainable<Cypress.Response<AuthSuccessResponse>> {
-    return cy.request<AuthSuccessResponse>({
+  login(payload: AuthPayload): Cypress.Chainable<Cypress.Response<LoginSuccessResponse>> {
+    return cy.request<LoginSuccessResponse>({
       method: 'POST',
       url: ENDPOINTS.login,
       body: payload,
@@ -41,11 +48,11 @@ export const LoginPage = {
     });
   },
 
-  register(payload: AuthPayload): Cypress.Chainable<Cypress.Response<RegisterSuccessResponse>> {
-    return cy.request<RegisterSuccessResponse>({
-      method: 'POST',
-      url: ENDPOINTS.register,
-      body: payload,
+  me(token: string): Cypress.Chainable<Cypress.Response<MeResponse>> {
+    return cy.request<MeResponse>({
+      method: 'GET',
+      url: ENDPOINTS.me,
+      headers: { Authorization: `Bearer ${token}` },
     });
   },
 };

@@ -3,10 +3,10 @@
 declare namespace Cypress {
   interface Chainable {
     /**
-     * Log in via Reqres.in /api/login. Stores token in Cypress.env('token').
-     * @example cy.login('eve.holt@reqres.in', 'cityslicka')
+     * Log in via DummyJSON /auth/login. Stores accessToken in Cypress.env('token').
+     * @example cy.login('emilys', 'emilyspass')
      */
-    login(email: string, password: string): Chainable<string>;
+    login(username: string, password: string): Chainable<string>;
 
     /**
      * Create a post via JSONPlaceholder /posts.

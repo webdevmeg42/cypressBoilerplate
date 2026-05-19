@@ -2,7 +2,7 @@ import { defineConfig } from 'cypress';
 
 export default defineConfig({
   e2e: {
-    baseUrl: 'https://reqres.in',
+    baseUrl: 'https://dummyjson.com',
     env: {
       jsonplaceholderUrl: 'https://jsonplaceholder.typicode.com',
     },
