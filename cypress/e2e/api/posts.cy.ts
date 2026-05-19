@@ -1,0 +1,38 @@
+import { createPost, getPost, getPosts } from '../../support/api/jsonplaceholder';
+
+describe('Posts API — JSONPlaceholder', () => {
+  it('GET /posts returns 100 posts with the correct shape', () => {
+    getPosts().then((response) => {
+      expect(response.status).to.eq(200);
+      expect(response.body).to.have.length(100);
+
+      const first = response.body[0];
+      expect(first).to.have.all.keys('id', 'title', 'body', 'userId');
+      expect(first.id).to.be.a('number');
+      expect(first.title).to.be.a('string').and.have.length.greaterThan(0);
+      expect(first.userId).to.be.a('number');
+    });
+  });
+
+  it('GET /posts/1 returns the expected post', () => {
+    getPost(1).then((response) => {
+      expect(response.status).to.eq(200);
+      expect(response.body.id).to.eq(1);
+      expect(response.body.userId).to.eq(1);
+      expect(response.body.title).to.be.a('string').and.have.length.greaterThan(0);
+      expect(response.body.body).to.be.a('string').and.have.length.greaterThan(0);
+    });
+  });
+
+  it('POST /posts creates a new post and echoes the body', () => {
+    cy.fixture('api/post').then((post: { title: string; body: string; userId: number }) => {
+      createPost(post).then((response) => {
+        expect(response.status).to.eq(201);
+        expect(response.body.title).to.eq(post.title);
+        expect(response.body.body).to.eq(post.body);
+        expect(response.body.userId).to.eq(post.userId);
+        expect(response.body.id).to.be.a('number');
+      });
+    });
+  });
+});
