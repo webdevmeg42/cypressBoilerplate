@@ -1,0 +1,26 @@
+{
+  "name": "cypress-boilerplate",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "cy:open": "cypress open",
+    "cy:run": "cypress run",
+    "cy:run:api": "cypress run --spec 'cypress/e2e/api/**'",
+    "cy:run:ui": "cypress run --spec 'cypress/e2e/ui/**'",
+    "lint": "eslint cypress --ext .ts",
+    "format": "prettier --write .",
+    "report": "mochawesome-merge cypress/reports/*.json | marge --reportDir cypress/reports/html"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "cypress": "^13.0.0",
+    "eslint": "^8.57.0",
+    "eslint-plugin-cypress": "^3.0.0",
+    "mochawesome": "^7.1.3",
+    "mochawesome-merge": "^4.3.0",
+    "mochawesome-report-generator": "^6.2.0",
+    "prettier": "^3.0.0",
+    "typescript": "^5.0.0"
+  }
+}
