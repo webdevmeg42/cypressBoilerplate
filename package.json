@@ -13,7 +13,7 @@
     "report": "mkdir -p cypress/reports && mochawesome-merge 'cypress/reports/*.json' | marge --reportDir cypress/reports/html"
   },
   "devDependencies": {
-    "@cypress/grep": "^6.0.0",
+    "@cypress/grep": "^3.1.5",
     "@types/node": "^25.9.1",
     "@typescript-eslint/eslint-plugin": "^7.0.0",
     "@typescript-eslint/parser": "^7.0.0",

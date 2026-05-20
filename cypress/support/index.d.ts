@@ -1,10 +1,9 @@
 /// <reference types="cypress" />
 
-declare module '@cypress/grep' {
-  export function register(): void;
-}
-declare module '@cypress/grep/plugin' {
-  export function plugin(config: Cypress.PluginConfigOptions): Cypress.PluginConfigOptions;
+declare module '@cypress/grep/src/support';
+declare module '@cypress/grep/src/plugin' {
+  function plugin(on: Cypress.PluginEvents, config: Cypress.PluginConfigOptions): void;
+  export = plugin;
 }
 
 declare namespace Cypress {
