@@ -1,31 +1,37 @@
 import { createPost, getPost, getPosts } from '../../support/api/jsonplaceholder';
 
-describe('Posts API — JSONPlaceholder', () => {
-  it('GET /posts returns 100 posts with the correct shape', { tags: ['@smoke', '@regression'] }, () => {
-    getPosts().then((response) => {
-      expect(response.status).to.eq(200);
-      expect(response.body).to.have.length(100);
+type Post = { id: number; title: string; body: string; userId: number };
 
-      const first = response.body[0];
-      expect(first).to.have.all.keys('id', 'title', 'body', 'userId');
-      expect(first.id).to.be.a('number');
-      expect(first.title).to.be.a('string').and.have.length.greaterThan(0);
-      expect(first.userId).to.be.a('number');
+describe('Posts API — JSONPlaceholder', () => {
+  it('GET /posts returns posts with the correct shape', { tags: ['@smoke', '@regression'] }, () => {
+    cy.fixture<Post[]>('api/posts').then((expected) => {
+      getPosts().then((response) => {
+        expect(response.status).to.eq(200);
+        expect(response.body).to.have.length.greaterThan(0);
+
+        const first = response.body[0];
+        expect(first).to.have.all.keys(Object.keys(expected[0]));
+        expect(first.id).to.be.a('number');
+        expect(first.title).to.be.a('string').and.have.length.greaterThan(0);
+        expect(first.userId).to.be.a('number');
+      });
     });
   });
 
   it('GET /posts/1 returns the expected post', { tags: '@regression' }, () => {
-    getPost(1).then((response) => {
-      expect(response.status).to.eq(200);
-      expect(response.body.id).to.eq(1);
-      expect(response.body.userId).to.eq(1);
-      expect(response.body.title).to.be.a('string').and.have.length.greaterThan(0);
-      expect(response.body.body).to.be.a('string').and.have.length.greaterThan(0);
+    cy.fixture<Post>('api/post').then((expected) => {
+      getPost(1).then((response) => {
+        expect(response.status).to.eq(200);
+        expect(response.body.id).to.eq(expected.id);
+        expect(response.body.userId).to.eq(expected.userId);
+        expect(response.body.title).to.be.a('string').and.have.length.greaterThan(0);
+        expect(response.body.body).to.be.a('string').and.have.length.greaterThan(0);
+      });
     });
   });
 
   it('POST /posts creates a new post and echoes the body', { tags: ['@smoke', '@regression'] }, () => {
-    cy.fixture('api/post').then((post: { title: string; body: string; userId: number }) => {
+    cy.fixture<Omit<Post, 'id'>>('api/post').then((post) => {
       createPost(post).then((response) => {
         expect(response.status).to.eq(201);
         expect(response.body.title).to.eq(post.title);

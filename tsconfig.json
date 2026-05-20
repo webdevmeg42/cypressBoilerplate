@@ -7,7 +7,7 @@
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "types": ["cypress"],
+    "types": ["cypress", "node"],
     "baseUrl": "."
   },
   "include": ["cypress/**/*.ts", "cypress.config.ts"]

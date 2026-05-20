@@ -1,8 +1,7 @@
 import { defineConfig } from 'cypress';
 import { randomUUID } from 'crypto';
 
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const cypressGrep = require('@cypress/grep/src/plugin');
+import cypressGrep from '@cypress/grep/plugin';
 
 export default defineConfig({
   e2e: {
@@ -25,6 +24,17 @@ export default defineConfig({
     screenshotOnRunFailure: true,
     setupNodeEvents(on, config) {
       cypressGrep(on, config);
+
+      on('before:browser:launch', (browser, launchOptions) => {
+        if (browser.family === 'chromium') {
+          launchOptions.args.push('--no-sandbox');
+          launchOptions.args.push('--disable-gpu');
+          launchOptions.args.push('--disable-dev-shm-usage');
+          launchOptions.args.push('--disable-software-rasterizer');
+          launchOptions.args.push('--disable-features=VizDisplayCompositor');
+        }
+        return launchOptions;
+      });
 
       on('task', {
         generateUuid(): string {

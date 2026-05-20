@@ -1,9 +1,13 @@
 /// <reference types="cypress" />
 
-declare module '@cypress/grep/src/support';
-declare module '@cypress/grep/src/plugin';
+declare module '@cypress/grep';
+declare module '@cypress/grep/plugin';
 
 declare namespace Cypress {
+  interface TestConfigOverrides {
+    tags?: string | string[];
+  }
+
   interface Chainable {
     /**
      * Log in via DummyJSON /auth/login. Stores accessToken in Cypress.env('token').

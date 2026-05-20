@@ -29,14 +29,17 @@ describe('Auth flows — DummyJSON', () => {
 
   context('Authenticated request', () => {
     it('GET /auth/me returns user data when called with a valid token', { tags: ['@smoke', '@regression'] }, () => {
-      // Defer until cy.login() has populated Cypress.env('token').
-      cy.wrap(null).then(() => {
-        const token = Cypress.env('token') as string;
-        LoginPage.me(token).then((response) => {
-          expect(response.status).to.eq(200);
-          expect(response.body).to.have.property('id').that.is.a('number');
-          expect(response.body).to.have.property('username').that.is.a('string');
-          expect(response.body).to.have.property('email').that.is.a('string');
+      cy.fixture('ui/me-response').then((expected: { id: number; username: string; email: string }) => {
+        // Defer until cy.login() has populated Cypress.env('token').
+        cy.wrap(null).then(() => {
+          const token = Cypress.env('token') as string;
+          LoginPage.me(token).then((response) => {
+            expect(response.status).to.eq(200);
+            expect(response.body).to.have.property('id').that.is.a('number');
+            expect(response.body).to.have.property('username').that.is.a('string');
+            expect(response.body).to.have.property('email').that.is.a('string');
+            expect(response.body.username).to.eq(expected.username);
+          });
         });
       });
     });

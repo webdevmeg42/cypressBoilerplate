@@ -1,4 +1,5 @@
 {
+  "id": 1,
   "title": "Test Post Title",
   "body": "This is the body of the test post.",
   "userId": 1
