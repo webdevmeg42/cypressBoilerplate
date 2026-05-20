@@ -4,12 +4,72 @@ Production-pattern Cypress starter kit with TypeScript, Page Objects, typed API 
 
 Demo test suites run against [JSONPlaceholder](https://jsonplaceholder.typicode.com) (API tests) and [DummyJSON](https://dummyjson.com) (auth flow tests).
 
-## Getting Started
+## Setup
 
 ```bash
 npm install
-npm run cy:open   # open interactive Test Runner
-npm run cy:run    # run all tests headless
+```
+
+## Running Cypress
+
+### Interactive mode
+
+Opens the Cypress Test Runner UI where you can select and watch tests run in a browser.
+
+```bash
+npm run cy:open
+```
+
+### Headless mode
+
+Runs the full test suite in the terminal with no browser window. Use this for CI or quick local checks.
+
+```bash
+npm run cy:run
+```
+
+### Run a specific suite
+
+```bash
+npm run cy:run:api   # API tests only  (cypress/e2e/api/**)
+npm run cy:run:ui    # Auth flow tests (cypress/e2e/ui/**)
+```
+
+### Run a single spec file
+
+```bash
+npx cypress run --spec 'cypress/e2e/api/posts.cy.ts'
+```
+
+### Run with a specific browser
+
+```bash
+npx cypress run --browser chrome
+npx cypress run --browser firefox
+npx cypress run --browser electron   # default, bundled with Cypress
+```
+
+### Headed mode (headless runner + visible browser)
+
+```bash
+npx cypress run --headed
+```
+
+## Reports
+
+After a headless run, merge the per-spec JSON files into a single HTML report:
+
+```bash
+npm run report
+```
+
+The report is written to `cypress/reports/html/index.html`.
+
+## Code Quality
+
+```bash
+npm run lint     # ESLint — checks for Cypress anti-patterns and TypeScript issues
+npm run format   # Prettier — formats all files in place
 ```
 
 ## Project Structure
@@ -29,18 +89,6 @@ cypress/
     ├── e2e.ts        # Entry point
     └── index.d.ts    # Command type declarations
 ```
-
-## Scripts
-
-| Command | Description |
-|---|---|
-| `npm run cy:open` | Open Cypress Test Runner (interactive) |
-| `npm run cy:run` | Run all tests headless |
-| `npm run cy:run:api` | Run API tests only |
-| `npm run cy:run:ui` | Run UI/auth tests only |
-| `npm run lint` | Lint TypeScript files with ESLint |
-| `npm run format` | Format all files with Prettier |
-| `npm run report` | Merge JSON outputs → HTML report |
 
 ## Custom Commands
 
