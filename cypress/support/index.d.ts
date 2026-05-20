@@ -1,7 +1,11 @@
 /// <reference types="cypress" />
 
-declare module '@cypress/grep';
-declare module '@cypress/grep/plugin';
+declare module '@cypress/grep' {
+  export function register(): void;
+}
+declare module '@cypress/grep/plugin' {
+  export function plugin(config: Cypress.PluginConfigOptions): Cypress.PluginConfigOptions;
+}
 
 declare namespace Cypress {
   interface TestConfigOverrides {

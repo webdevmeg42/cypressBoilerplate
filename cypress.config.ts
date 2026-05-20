@@ -1,7 +1,7 @@
 import { defineConfig } from 'cypress';
 import { randomUUID } from 'crypto';
 
-import cypressGrep from '@cypress/grep/plugin';
+import { plugin as cypressGrep } from '@cypress/grep/plugin';
 
 export default defineConfig({
   e2e: {
@@ -23,7 +23,7 @@ export default defineConfig({
     video: false,
     screenshotOnRunFailure: true,
     setupNodeEvents(on, config) {
-      cypressGrep(on, config);
+      cypressGrep(config);
 
       on('before:browser:launch', (browser, launchOptions) => {
         if (browser.family === 'chromium') {
