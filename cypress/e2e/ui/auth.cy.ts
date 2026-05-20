@@ -1,11 +1,14 @@
 import { LoginPage } from '../../support/pages/LoginPage';
 
 describe('Auth flows — DummyJSON', () => {
+  beforeEach(() => {
+    cy.fixture('ui/user').then((user: { username: string; password: string }) => {
+      cy.login(user.username, user.password);
+    });
+  });
+
   context('Login', () => {
     it('stores an accessToken in Cypress.env on successful login', () => {
-      cy.fixture('ui/user').then((user: { username: string; password: string }) => {
-        cy.login(user.username, user.password);
-      });
       // cy.wrap(null) defers this assertion until cy.login() has completed
       // and Cypress.env('token') has been written by the command.
       cy.wrap(null).then(() => {
@@ -26,9 +29,6 @@ describe('Auth flows — DummyJSON', () => {
 
   context('Authenticated request', () => {
     it('GET /auth/me returns user data when called with a valid token', () => {
-      cy.fixture('ui/user').then((user: { username: string; password: string }) => {
-        cy.login(user.username, user.password);
-      });
       // Defer until cy.login() has populated Cypress.env('token').
       cy.wrap(null).then(() => {
         const token = Cypress.env('token') as string;

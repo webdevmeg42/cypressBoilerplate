@@ -55,6 +55,29 @@ npx cypress run --browser electron   # default, bundled with Cypress
 npx cypress run --headed
 ```
 
+### Run against a different base URL
+
+Override the `baseUrl` from `cypress.config.ts` at runtime — useful for pointing at staging, a local dev server, or a feature environment without changing config files.
+
+```bash
+npx cypress run --config baseUrl=https://staging.example.com
+npx cypress run --config baseUrl=http://localhost:3000
+```
+
+### Keep running after a failure
+
+By default Cypress runs all tests even when some fail. If you have `bail` set in your config and want to override it for a full run:
+
+```bash
+npx cypress run --config bail=false
+```
+
+To stop the run after the first failing test (useful in CI to save time):
+
+```bash
+npx cypress run --config bail=1
+```
+
 ## Reports
 
 After a headless run, merge the per-spec JSON files into a single HTML report:

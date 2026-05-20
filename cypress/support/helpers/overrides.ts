@@ -1,0 +1,1 @@
+Cypress.config('scrollBehavior', 'center');

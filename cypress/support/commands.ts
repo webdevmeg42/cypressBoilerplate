@@ -1,4 +1,4 @@
-import { createPost } from './api/jsonplaceholder';
+import { createPost, Post } from './api/jsonplaceholder';
 import { LoginPage } from './pages/LoginPage';
 
 Cypress.Commands.add('login', (username: string, password: string) => {
@@ -8,6 +8,6 @@ Cypress.Commands.add('login', (username: string, password: string) => {
   });
 });
 
-Cypress.Commands.add('createPost', (body) => {
+Cypress.Commands.add('createPost', (body: Omit<Post, 'id'>) => {
   return createPost(body);
 });
