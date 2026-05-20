@@ -8,7 +8,7 @@ describe('Auth flows — DummyJSON', () => {
   });
 
   context('Login', () => {
-    it('stores an accessToken in Cypress.env on successful login', () => {
+    it('stores an accessToken in Cypress.env on successful login', { tags: ['@smoke', '@regression'] }, () => {
       // cy.wrap(null) defers this assertion until cy.login() has completed
       // and Cypress.env('token') has been written by the command.
       cy.wrap(null).then(() => {
@@ -17,7 +17,7 @@ describe('Auth flows — DummyJSON', () => {
       });
     });
 
-    it('returns 400 and an error message for invalid credentials', () => {
+    it('returns 400 and an error message for invalid credentials', { tags: '@regression' }, () => {
       LoginPage.loginExpectingError({ username: 'emilys', password: 'wrongpassword' }).then(
         (response) => {
           expect(response.status).to.eq(400);
@@ -28,7 +28,7 @@ describe('Auth flows — DummyJSON', () => {
   });
 
   context('Authenticated request', () => {
-    it('GET /auth/me returns user data when called with a valid token', () => {
+    it('GET /auth/me returns user data when called with a valid token', { tags: ['@smoke', '@regression'] }, () => {
       // Defer until cy.login() has populated Cypress.env('token').
       cy.wrap(null).then(() => {
         const token = Cypress.env('token') as string;

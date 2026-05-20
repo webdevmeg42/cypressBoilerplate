@@ -1,5 +1,8 @@
 /// <reference types="cypress" />
 
+declare module '@cypress/grep/src/support';
+declare module '@cypress/grep/src/plugin';
+
 declare namespace Cypress {
   interface Chainable {
     /**

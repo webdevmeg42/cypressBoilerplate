@@ -19,34 +19,58 @@ on:
         description: 'Spec file(s) to run — e.g. cypress/e2e/api/posts.cy.ts or cypress/e2e/api/** (leave blank to run all)'
         required: false
         default: ''
+      grep:
+        description: 'Tag filter — e.g. @smoke (leave blank to run all)'
+        required: false
+        default: ''
 
 jobs:
-  cypress-run:
+  lint-and-typecheck:
     runs-on: ubuntu-latest
-
+    container:
+      image: node:20
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           ref: ${{ github.event.inputs.branch || github.ref }}
 
-      - name: Set up Node.js 20
-        uses: actions/setup-node@v4
+      - run: npm ci
+
+      - name: Type check
+        run: npx tsc --noEmit
+
+      - name: Lint
+        run: npm run lint
+
+  cypress-run:
+    needs: lint-and-typecheck
+    runs-on: ubuntu-latest
+    container:
+      image: cypress/base:20.18.0
+    strategy:
+      fail-fast: false
+      matrix:
+        spec:
+          - 'cypress/e2e/api/**'
+          - 'cypress/e2e/ui/**'
+
+    steps:
+      - uses: actions/checkout@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          ref: ${{ github.event.inputs.branch || github.ref }}
 
       - name: Run Cypress tests
         uses: cypress-io/github-action@v6
         with:
-          config: ${{ github.event.inputs.base_url != '' && format('baseUrl={0}', github.event.inputs.base_url) || '' }}
-          spec: ${{ github.event.inputs.spec != '' && github.event.inputs.spec || '' }}
+          spec: ${{ (github.event_name == 'workflow_dispatch' && inputs.spec != '') && inputs.spec || matrix.spec }}
+          config: ${{ (github.event_name == 'workflow_dispatch' && inputs.base_url != '') && format('baseUrl={0}', inputs.base_url) || '' }}
+          env: ${{ (github.event_name == 'workflow_dispatch' && inputs.grep != '') && format('grepTags={0}', inputs.grep) || '' }}
 
       - name: Upload test reports and screenshots
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: cypress-results
+          name: cypress-results-${{ matrix.spec == 'cypress/e2e/api/**' && 'api' || 'ui' }}
           path: |
             cypress/reports/
             cypress/screenshots/
