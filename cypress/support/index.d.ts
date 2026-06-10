@@ -11,6 +11,10 @@ declare namespace Cypress {
     tags?: string | string[];
   }
 
+  interface SuiteConfigOverrides {
+    tags?: string | string[];
+  }
+
   interface Chainable {
     /**
      * Log in via DummyJSON /auth/login. Stores accessToken in Cypress.env('token').
