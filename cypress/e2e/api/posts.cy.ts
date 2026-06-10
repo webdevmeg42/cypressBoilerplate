@@ -1,6 +1,4 @@
-import { createPost, getPost, getPosts } from '../../support/api/jsonplaceholder';
-
-type Post = { id: number; title: string; body: string; userId: number };
+import { createPost, getPost, getPosts, Post } from '../../support/api/jsonplaceholder';
 
 describe('Posts API — JSONPlaceholder', () => {
   it('GET /posts returns posts with the correct shape', { tags: ['@smoke', '@regression'] }, () => {

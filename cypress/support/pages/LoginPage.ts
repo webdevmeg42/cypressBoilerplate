@@ -1,5 +1,3 @@
-// API-layer auth helper following the Page Object naming convention.
-// In a real app, replace cy.request() calls with cy.visit() + cy.get() interactions.
 const ENDPOINTS = {
   login: '/auth/login',
   me: '/auth/me',
@@ -30,25 +28,14 @@ interface MeResponse {
   lastName: string;
 }
 
-export const LoginPage = {
-  login(payload: AuthPayload): Cypress.Chainable<Cypress.Response<LoginSuccessResponse>> {
-    return cy.request<LoginSuccessResponse>({
-      method: 'POST',
-      url: ENDPOINTS.login,
-      body: payload,
-    });
-  },
+function postLogin<T>(payload: Partial<AuthPayload>, failOnStatusCode = true): Cypress.Chainable<Cypress.Response<T>> {
+  return cy.request<T>({ method: 'POST', url: ENDPOINTS.login, body: payload, failOnStatusCode });
+}
 
-  loginExpectingError(
-    payload: Partial<AuthPayload>
-  ): Cypress.Chainable<Cypress.Response<AuthErrorResponse>> {
-    return cy.request<AuthErrorResponse>({
-      method: 'POST',
-      url: ENDPOINTS.login,
-      body: payload,
-      failOnStatusCode: false,
-    });
-  },
+export const LoginPage = {
+  login: (payload: AuthPayload) => postLogin<LoginSuccessResponse>(payload),
+
+  loginExpectingError: (payload: Partial<AuthPayload>) => postLogin<AuthErrorResponse>(payload, false),
 
   me(token: string): Cypress.Chainable<Cypress.Response<MeResponse>> {
     return cy.request<MeResponse>({

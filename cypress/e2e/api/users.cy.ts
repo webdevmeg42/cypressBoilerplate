@@ -1,6 +1,4 @@
-import { getUser, getUsers } from '../../support/api/jsonplaceholder';
-
-type User = { id: number; name: string; username: string; email: string; phone: string; website: string };
+import { getUser, getUsers, User } from '../../support/api/jsonplaceholder';
 
 describe('Users API — JSONPlaceholder', () => {
   it('GET /users returns all users with the correct shape', { tags: ['@smoke', '@regression'] }, () => {

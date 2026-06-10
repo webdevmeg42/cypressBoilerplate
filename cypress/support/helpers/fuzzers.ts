@@ -1,6 +1,8 @@
 const ALPHA = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 const NUMERIC = '0123456789';
 const SPECIAL = '!@#$%^&*()_+-=[]{}|;\':",.<>?/`~\\';
+const ALPHANUMERIC = ALPHA + NUMERIC;
+const ALL = ALPHANUMERIC + SPECIAL;
 
 const EMOJIS = [
   '😀', '😂', '🥹', '😍', '🤔', '😎', '🥳', '😱', '🤯', '💀',
@@ -10,19 +12,17 @@ const EMOJIS = [
 
 type StringCharset = 'alpha' | 'alphanumeric' | 'all';
 
+function pickRandom(pool: ArrayLike<string>, count: number): string {
+  return Array.from({ length: count }, () => pool[Math.floor(Math.random() * pool.length)]).join('');
+}
+
 export function fuzzString(length = 10, charset: StringCharset = 'alphanumeric'): string {
-  const pool =
-    charset === 'alpha' ? ALPHA :
-    charset === 'alphanumeric' ? ALPHA + NUMERIC :
-    ALPHA + NUMERIC + SPECIAL;
-  return Array.from({ length }, () => pool[Math.floor(Math.random() * pool.length)]).join('');
+  const pool = charset === 'alpha' ? ALPHA : charset === 'alphanumeric' ? ALPHANUMERIC : ALL;
+  return pickRandom(pool, length);
 }
 
 export function fuzzEmoji(count = 1): string {
-  return Array.from(
-    { length: count },
-    () => EMOJIS[Math.floor(Math.random() * EMOJIS.length)]
-  ).join('');
+  return pickRandom(EMOJIS, count);
 }
 
 export function fuzzIp(version: 4 | 6 = 4): string {
